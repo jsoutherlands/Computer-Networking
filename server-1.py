@@ -27,6 +27,8 @@ def juego(tableroGato):
 	print('===================')
 	
 
+
+
 tableroGato = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
 marcaTablero(tableroGato, '2,0')
 tablero(tableroGato)
