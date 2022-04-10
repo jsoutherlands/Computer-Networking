@@ -92,31 +92,32 @@ while flag:
 			gana_jug = 0
 			contador_de_jugadas = 0
 			while gana_jug < 1 and gana_bot < 1:
-				print('TABLERO DESPUES DE QUE MARCARON LOS 2 ',tableroGato)
+				
 				movi_player = (playerSocket.recv(1024).decode()) #jugada jugador
 				movi_player = movi_player.split(',')
 				tableroGato[int(movi_player[1])][int(movi_player[0])] = 'o' #marca
 				contador_de_jugadas += 1
-				print('MARCO O', tableroGato)
-				'''if (verificar(tableroGato,contador_de_jugadas) == 1):
-					gana_bot +=1
+				
+				if (verificar(tableroGato,contador_de_jugadas) == 1):
+					playerSocket.send(("0,0,bot").encode())
 					break
 				elif (verificar(tableroGato,contador_de_jugadas)== 2):
-					gana_jug +=1
+					playerSocket.send(("0,0,jugador").encode())
 					break
 				elif (verificar(tableroGato, contador_de_jugadas) == 0):
-					break'''
+					playerSocket.send(("0,0,empate").encode())
+					break
 				serverSocket.sendto("listos".encode(), (address, np)) #avisar para que juegue el bot
 				bot, addr = serverSocket.recvfrom(1024)
 				
 				bot = bot.decode()
 				bot = tab[int(bot)]
-				print('BOT', bot)
+				
 				botcl = bot
 				
 				bot = bot.split(",")
 				contador_de_jugadas += 1
-				while (tableroGato[int(bot[1])][int(bot[0])] != " "): #puede fallat dont forget
+				while (tableroGato[int(bot[1])][int(bot[0])] != " "): 
 					serverSocket.sendto("listos".encode(), (address, np)) #avisar para que juegue el bot
 					bot, addr = serverSocket.recvfrom(1024)
 					bot = bot.decode()
@@ -125,10 +126,9 @@ while flag:
 					bot = bot.split(",")
 					if contador_de_jugadas >= 9:
 						break
-				print('BOOOOOOOOT',bot)
-				#playerSocket.send(botcl.encode()) ##VER COMO LO RECIBE EL CLIENTE
+				
 				tableroGato[int(bot[1])][int(bot[0])] = "x"
-				print('MARCO X',tableroGato)
+				
 				if (verificar(tableroGato,contador_de_jugadas) == 1):
 					playerSocket.send((botcl+",bot").encode())
 					break
@@ -144,13 +144,7 @@ while flag:
 				#aca viene la decision 
 				print('contador de jugadas : ', contador_de_jugadas)
 			serverSocket.sendto("END".encode(), (address,np)) #avisamos que termina el juego al servidor gato
-			#if gana_jug == 1:
-			#	playerSocket.send("jugador".encode())
-			#elif gana_bot == 1:
-			#	playerSocket.send("bot".encode())
-			#else:
-			#	playerSocket.send("empate".encode())
-			
+				
 		else:
 			playerSocket.send(status.encode()) #Envia el No de server-cachipun
 			print("El servidor no se encuentra disponibles en estos momentos, intente mas tarde ")

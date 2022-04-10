@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	fmt.Println("[*] Bienvenidos al servidor 'LA SUBE' el mejor servidor de cachipun de Gratisjuegos.org")
-	PORT := ":8002" // revisar
+	fmt.Println(" Bienvenidos al servidor GATITO MIAU MIAU ")
+	PORT := ":8002"
 	BUFFER := 1024
 	s, err := net.ResolveUDPAddr("udp4", PORT)
 
@@ -18,7 +18,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("[*] El servicio para pedir partidas se ejecutara en el puerto localhost" + PORT)
+	fmt.Println("El servicio para pedir una partida se ejecutara en el puerto localhost" + PORT)
 
 	connection, err := net.ListenUDP("udp4", s)
 	if err != nil {
@@ -31,7 +31,7 @@ func main() {
 
 	for {
 		n, addr, err := connection.ReadFromUDP(buffer)
-		fmt.Println("# El cliente envio ->", string(buffer[0:n])) //Leyendo el mensaje del servidor intermedio
+		fmt.Println("El jugador envió : ", string(buffer[0:n])) //Leyendo el mensaje del servidor intermedio
 		if string(buffer[0:n]) == "1" {
 			fmt.Println("El Jugador desea jugar")
 			respond := rand.Intn(100)
@@ -49,7 +49,8 @@ func main() {
 				}
 				RANDOM_PORT := ":" + str_np
 				BUFFER2 := 1024
-				s2, err2 := net.ResolveUDPAddr("udp4", RANDOM_PORT) // inicia el socket UDP con el puerto generado
+				s2, err2 := net.ResolveUDPAddr("udp4", RANDOM_PORT)
+				fmt.Println("Ejecutando servidor gato en el puerto :", RANDOM_PORT) // Indicamos en que puerto aleatorio se ejecutara
 				if err2 != nil {
 					fmt.Println(err2)
 					return
@@ -78,13 +79,13 @@ func main() {
 				connection2.Close()
 			} else {
 				message := []byte("No;0")
-				fmt.Println("El servidor gato no quiere jugar, miau miau")
+				fmt.Println("El servidor gato no quiere jugar, miau't miau't")
 				_, err = connection.WriteToUDP(message, addr) //Se el mensaje de no disponibilidad al servidor intermediario
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
-				fmt.Println("No se jugará")
+				fmt.Println("No se jugará, lo sentimos mucho")
 				return
 			}
 		} else {

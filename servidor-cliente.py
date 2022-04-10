@@ -66,6 +66,7 @@ while bigFlag:
 				#player = input("Ingrese su jugada (x,y): ")
 				
 			#response = clientSocket.recv(1024).decode() #Recibe quien gana la partida
+			tablero(tableroGato)
 			if comando[2] == "jugador":
 				print("Ganas la partida")
 				print("------------------------------------")
