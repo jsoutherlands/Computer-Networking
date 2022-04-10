@@ -40,35 +40,39 @@ while bigFlag:
 			print('--------Comienza el Juego--------')
 			tableroGato = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
 			tablero(tableroGato)
-			player = input("Ingrese su jugada (x,y): ")
+			#player = input("Ingrese su jugada (x,y): ")
+			#clientSocket.send(player.encode()) #Envía jugada al servidor-intermediario
 			while True:
+				player = input("Ingrese su jugada (x,y): ")
+				clientSocket.send(player.encode()) 
 				print('==================')
 
-				clientSocket.send(player.encode()) #Envía jugada al mid-server
 				bot = clientSocket.recv(1024).decode()
 				print('bot:',bot)
-				if  bot != 'empate' and bot != 'jugador' and bot != 'bot':
+				comando = bot.split(",")
+				if  comando[2] == "nada":
 					marcaTablero(tableroGato, player, 1)
 					marcaTablero(tableroGato, bot, 2)
+					tablero(tableroGato)
 				else:
-					print('entre al false')
+					tablero(tableroGato)
 					break
-
+				print('no he funcionado :c')
 				#response = clientSocket.recv(1024).decode()
 				#print(response)
 				#Recibe el resultado de la jugada
 				#Verifica si algún jugador gana
-				tablero(tableroGato)
-				player = input("Ingrese su jugada (x,y): ")
+				
+				#player = input("Ingrese su jugada (x,y): ")
 				
 			#response = clientSocket.recv(1024).decode() #Recibe quien gana la partida
-			if bot == "jugador":
+			if comando[2] == "jugador":
 				print("Ganas la partida")
 				print("------------------------------------")
-			elif bot == "bot":
+			elif comando[2] == "bot":
 				print("El bot gana la partida")
 				print("------------------------------------")
-			elif bot == "empate":
+			elif comando[2] == "empate":
 				print("¡Hay un empate!")
 				print("------------------------------------")
 		else: #cachipun-server no puede jugar
