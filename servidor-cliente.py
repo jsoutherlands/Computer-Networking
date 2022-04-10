@@ -1,6 +1,6 @@
 import socket as skt
 
-def tablero(tableroGato): 
+def tablero(tableroGato): # Imprime el tablero
 	print('. 0 | 1 | 2')
 	print('0 ' + tableroGato[0][0] + ' | ' + tableroGato[0][1] + ' | ' + tableroGato[0][2])
 	print('----+---+---')
@@ -9,7 +9,7 @@ def tablero(tableroGato):
 	print('2 ' + tableroGato[2][0] + ' | ' + tableroGato[2][1] + ' | ' + tableroGato[2][2])
 
 def marcaTablero(tableroGato, jugada, jugador):
-	pos = jugada.split(',') #Verificar por parte del intermedio si esta ocuapda la casilla
+	pos = jugada.split(',') #Verificar por parte del intermedio si está ocupada la casilla
 	if jugador == 1:
 		tableroGato[int(pos[1])][int(pos[0])] = 'o'
 	else:
@@ -32,42 +32,30 @@ while bigFlag:
 	toSend = input()
 	clientSocket.send(toSend.encode())
 
-	if toSend == "1":
-		response = clientSocket.recv(1024).decode()
+	if toSend == "1": # Ingresa si el cliente pulsa "1-Jugar"
+		response = clientSocket.recv(1024).decode() # Recibe la confirmación del servidor intermediario para comenzar
 		
 		if response == "OK":
 			print('respuesta de disponibilidad: OK')
 			print('--------Comienza el Juego--------')
 			tableroGato = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
 			tablero(tableroGato)
-			#player = input("Ingrese su jugada (x,y): ")
-			#clientSocket.send(player.encode()) #Envía jugada al servidor-intermediario
 			while True:
 				player = input("Ingrese su jugada (x,y): ")
 				clientSocket.send(player.encode()) 
-				print('==================')
-
+				print('==============================')
 				bot = clientSocket.recv(1024).decode()
 				print('bot:',bot)
 				comando = bot.split(",")
-				if  comando[2] == "nada":
-					marcaTablero(tableroGato, player, 1)
-					marcaTablero(tableroGato, bot, 2)
-					tablero(tableroGato)
+				if  comando[2] == "nada": # El formato que envía el servidor intermediario es del tipo "x,y,comando", siendo comando
+					marcaTablero(tableroGato, player, 1) 			# las opciones "jugador", "bot", "empate" o "nada", dependiendo
+					marcaTablero(tableroGato, bot, 2)				# de qué pasa luego de la jugada realizada. Esto puede terminar
+					tablero(tableroGato)							# inmediatamente el juego al encontrar el ganador o haber un empate
 				else:
 					tablero(tableroGato)
-					break
-				print('no he funcionado :c')
-				#response = clientSocket.recv(1024).decode()
-				#print(response)
-				#Recibe el resultado de la jugada
-				#Verifica si algún jugador gana
-				
-				#player = input("Ingrese su jugada (x,y): ")
-				
-			#response = clientSocket.recv(1024).decode() #Recibe quien gana la partida
+					break		
 			tablero(tableroGato)
-			if comando[2] == "jugador":
+			if comando[2] == "jugador": # Opciones en caso de que comando 
 				print("Ganas la partida")
 				print("------------------------------------")
 			elif comando[2] == "bot":
@@ -76,12 +64,11 @@ while bigFlag:
 			elif comando[2] == "empate":
 				print("¡Hay un empate!")
 				print("------------------------------------")
-		else: #cachipun-server no puede jugar
-			print("No hay disponibilidad de juego")
+		else: #gato no puede juegar
+			print('respuesta de disponibilidad: NO')
+			print('cerrando...')
 			bigFlag = False #Se termina la ejecución
 	else:
 		bigFlag = False #Se termina la ejecución
-
-
 
 clientSocket.close()
