@@ -25,10 +25,12 @@ def juego(tableroGato):
 	jugada= str(input())
 	marcaTablero(tableroGato, jugada)
 	print('===================')
-	
 
 
 
 tableroGato = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
-marcaTablero(tableroGato, '2,0')
+marcaTablero(tableroGato, '1,2')
+marcaTablero(tableroGato, '0,0')
+
+marcaTablero(tableroGato,'2,1')
 tablero(tableroGato)

@@ -29,7 +29,8 @@ while bigFlag:
         response = clientSocket.recv(2048).decode()
 
         if response == "Ok": #Cachipun-server desea jugar
-            flag = True #flag para el ciclo del juego
+            flag = True
+             #flag para el ciclo del juego
             while flag:
                 print("Ingrese 1 para Piedra")
                 print("Ingrese 2 para Papel")

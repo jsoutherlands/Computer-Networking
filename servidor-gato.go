@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-
-	PORT := ":8000" // revisar
+	fmt.Println("[*] Bienvenidos al servidor 'LA SUBE' el mejor servidor de cachipun de Gratisjuegos.org")
+	PORT := ":8002" // revisar
 	BUFFER := 1024
 	s, err := net.ResolveUDPAddr("udp4", PORT)
 
@@ -17,6 +17,9 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+
+	fmt.Println("[*] El servicio para pedir partidas se ejecutara en el puerto localhost" + PORT)
+
 	connection, err := net.ListenUDP("udp4", s)
 	if err != nil {
 		fmt.Println(err)
@@ -27,7 +30,8 @@ func main() {
 	buffer := make([]byte, BUFFER)
 
 	for {
-		n, addr, err := connection.ReadFromUDP(buffer) //Leyendo el mensaje del servidor intermedio
+		n, addr, err := connection.ReadFromUDP(buffer)
+		fmt.Println("# El cliente envio ->", string(buffer[0:n])) //Leyendo el mensaje del servidor intermedio
 		if string(buffer[0:n]) == "1" {
 			fmt.Println("El Jugador desea jugar")
 			respond := rand.Intn(100)
@@ -61,9 +65,10 @@ func main() {
 					fmt.Println("El jugador dice:" + string(buffer2[0:n2]))
 					//IMPORTANTE CHEQUEAR COMO PASAR EL FORMATO DE (X,Y)
 					//CHEQUEALOO
-					jugada := strconv.Itoa(rand.Intn(4)) + strconv.Itoa(rand.Intn(4))
-					mensaje2 := []byte(strconv.Itoa(jugada))
-					fmt.Println("Servidor envía" + strconv.Itoa(jugada))
+					//jugada := strconv.Itoa(rand.Intn(4)) + "," + strconv.Itoa(rand.Intn(4))
+					jugada := strconv.Itoa(rand.Intn(9))
+					mensaje2 := []byte(jugada)
+					fmt.Println("Servidor envía" + jugada)
 					_, err2 = connection2.WriteToUDP(mensaje2, addr2) // manda su jugada aleatoria al servidor intermediario
 					if err2 != nil {
 						fmt.Println(err2)
