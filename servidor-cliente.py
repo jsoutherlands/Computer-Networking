@@ -8,10 +8,10 @@ def tablero(tableroGato): # Imprime el tablero
 	print('----+---+---')
 	print('2 ' + tableroGato[2][0] + ' | ' + tableroGato[2][1] + ' | ' + tableroGato[2][2])
 
-def marcaTablero(tableroGato, jugada, jugador):
+def marcaTablero(tableroGato, jugada, jugador): #Marca el tablero, que corresponde a una matriz de 3x3. Se marca "o" para jugador y "x" para el Bot.
 	pos = jugada.split(',') #Verificar por parte del intermedio si está ocupada la casilla
 	if jugador == 1:
-		tableroGato[int(pos[1])][int(pos[0])] = 'o'
+		tableroGato[int(pos[1])][int(pos[0])] = 'o' # Las posiciones están al revés para poder seguir la regla de (x,y).
 	else:
 		tableroGato[int(pos[1])][int(pos[0])] = 'x'
 
@@ -22,7 +22,7 @@ clientSocket.connect((address, serverPort))
 print("Conexión establecida con servidor intermedio en el puerto:",serverPort)
 response = None
 
-bigFlag = True #flag para terminar el programa
+bigFlag = True # Flag para terminar el programa
 
 while bigFlag:
 	print('-------- Bienvenido al Juego --------')
@@ -64,7 +64,7 @@ while bigFlag:
 			elif comando[2] == "empate":
 				print("¡Hay un empate!")
 				print("------------------------------------")
-		else: #gato no puede juegar
+		else: # Gato no disponible
 			print('respuesta de disponibilidad: NO')
 			print('cerrando...')
 			bigFlag = False #Se termina la ejecución

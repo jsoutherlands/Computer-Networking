@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println(" Bienvenidos al servidor GATITO MIAU MIAU ")
+	fmt.Println("Bienvenidos al servidor GATITO MIAU MIAU ")
 	PORT := ":8002"
 	BUFFER := 1024
 	s, err := net.ResolveUDPAddr("udp4", PORT)
@@ -50,7 +50,7 @@ func main() {
 				RANDOM_PORT := ":" + str_np
 				BUFFER2 := 1024
 				s2, err2 := net.ResolveUDPAddr("udp4", RANDOM_PORT)
-				fmt.Println("Ejecutando servidor gato en el puerto :", RANDOM_PORT) // Indicamos en que puerto aleatorio se ejecutara
+				fmt.Println("Ejecutando servidor gato en el puerto :", RANDOM_PORT) // Indicamos en qué puerto aleatorio se ejecutará
 				if err2 != nil {
 					fmt.Println(err2)
 					return
@@ -64,13 +64,10 @@ func main() {
 						break
 					}
 					fmt.Println("El jugador dice:" + string(buffer2[0:n2]))
-					//IMPORTANTE CHEQUEAR COMO PASAR EL FORMATO DE (X,Y)
-					//CHEQUEALOO
-					//jugada := strconv.Itoa(rand.Intn(4)) + "," + strconv.Itoa(rand.Intn(4))
-					jugada := strconv.Itoa(rand.Intn(9))
-					mensaje2 := []byte(jugada)
-					fmt.Println("Servidor envía" + jugada)
-					_, err2 = connection2.WriteToUDP(mensaje2, addr2) // manda su jugada aleatoria al servidor intermediario
+					jugada := strconv.Itoa(rand.Intn(9)) // Servidor envía números del 0 al 8 que luego se interpretan como posiciones
+					mensaje2 := []byte(jugada)			// como posiciones en el tablero.
+					fmt.Println("Servidor envía " + jugada)
+					_, err2 = connection2.WriteToUDP(mensaje2, addr2) // Manda su jugada aleatoria al servidor intermediario
 					if err2 != nil {
 						fmt.Println(err2)
 						break
@@ -80,7 +77,7 @@ func main() {
 			} else {
 				message := []byte("No;0")
 				fmt.Println("El servidor gato no quiere jugar, miau't miau't")
-				_, err = connection.WriteToUDP(message, addr) //Se el mensaje de no disponibilidad al servidor intermediario
+				_, err = connection.WriteToUDP(message, addr) // Se envía mensaje de no disponibilidad al servidor intermediario.
 				if err != nil {
 					fmt.Println(err)
 					return
@@ -89,7 +86,7 @@ func main() {
 				return
 			}
 		} else {
-			// si no recibe el '1' correspondiente a la solicitud de jugar, significa que el jugador ha terminado la sesion.
+			// si no recibe el '1' correspondiente a la solicitud de jugar, significa que el jugador ha terminado la sesión.
 			fmt.Println("El jugador cerró sesión")
 			return
 		}
